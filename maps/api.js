@@ -10,22 +10,27 @@ var htmls = [];
 var i = 0;
 var map = null;
 
-var infowindow = new google.maps.InfoWindow(
-  {
-    size: new google.maps.Size(150, 50)
-    
-  });
+
 
 // A function to create the marker and set up the event window
 function createMarker(point, name, html) {
   var marker = new google.maps.Marker({
     position: point,
-    map: map
+    map: map,
+    title: name
   });
-  google.maps.event.addDomListener(marker, "click", function () {
-    infowindow.setContent(html);
+  var infowindow = new google.maps.InfoWindow(
+    {
+      content: html
+      
+    });
+  marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
+  // google.maps.event.addDomListener(marker, "click", function () {
+  //   infowindow.setContent(html);
+  //   infowindow.open(map, marker);
+  // });
   // save the info we need to use later for the side_bar
   gmarkers[i] = marker;
   htmls[i] = html;
@@ -44,7 +49,7 @@ function myclick(i) {
 function initMap() {
   var myOptions = {
     zoom: 8,
-    center: new google.maps.LatLng(58, -98),
+    center: {lat:58,lng:-98},
     mapTypeControl: true,
     mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
     navigationControl: true,
@@ -69,7 +74,8 @@ function initMap() {
         var html = parts[2];
         var label = parts[3];
         var point = {
-          position: new google.maps.LatLng(lat, lng),
+          lat: lat,
+          lng: lng
         };
         // create the marker
         var marker = createMarker(point, label, html);
@@ -80,20 +86,17 @@ function initMap() {
   }
 
 
-  currentIndex = function () {
+  function currentIndex() {
     var page = window.location.pathname.split("/").pop();
-    page.split(".").pop();
-    page += ".txt";
-    return page;
+    return page.split(".")[0] + ".txt";
   }
 
   var processRequest = new XMLHttpRequest();
-  processRequest.open("GET", currentIndex, true);
+  processRequest.open("GET", currentIndex(), true);
+  processRequest.send();
   processRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      // Typical action to be performed when the document is ready:
-      var doc = processRequest.response;
-      process_it(doc);
+      process_it(processRequest.response);
     }
   };
     //]]>
