@@ -48,7 +48,7 @@ function myclick(i) {
 
 function initMap() {
   var myOptions = {
-    zoom: 8,
+    zoom: 3,
     center: {lat:58,lng:-98},
     mapTypeControl: true,
     mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU },
