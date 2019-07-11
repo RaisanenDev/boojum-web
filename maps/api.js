@@ -56,6 +56,15 @@ function initMap() {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
   map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+  var processRequest = new XMLHttpRequest();
+  processRequest.open("GET", currentIndex(), true);
+  processRequest.send();
+  processRequest.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      process_it(processRequest.response);
+    }
+  };
 }
   // google.maps.event.addListener(map, 'click', function () {
   //   infowindow.close();
@@ -91,12 +100,4 @@ function initMap() {
     return page.split(".")[0] + ".txt";
   }
 
-  var processRequest = new XMLHttpRequest();
-  processRequest.open("GET", currentIndex(), true);
-  processRequest.send();
-  processRequest.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      process_it(processRequest.response);
-    }
-  };
     //]]>
