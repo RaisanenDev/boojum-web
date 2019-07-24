@@ -9,6 +9,22 @@ var gmarkers = [];
 var htmls = [];
 var i = 0;
 var map = null;
+//making json global
+var jsonresponse
+
+  //To be moved into mapinit??
+  //this is for new JSON data
+  var jsonxObj = new XMLHttpRequest();
+jsonxObj.overrideMimeType("application/json");
+jsonxObj.open('GET', 'jsonGEO.json', true);
+jsonxObj.send();
+jsonxObj.onreadystatechange = function () {
+if (jsonxObj.readyState == 4 && jsonxObj.status == "200") {
+jsonresponse = JSON.parse(jsonxObj.responseText);
+
+// Assuming json data is wrapped in square brackets this just prints out for testing
+console.log(jsonresponse[0].coverage[0]); } 
+};
 
 
 
@@ -57,47 +73,79 @@ function initMap() {
   }
   map = new google.maps.Map(document.getElementById("map"), myOptions);
 
+  //This is for old Txt based data
   var processRequest = new XMLHttpRequest();
   processRequest.open("GET", currentIndex(), true);
   processRequest.send();
   processRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      process_it(processRequest.response);
+      process_it_geo(processRequest.response);
     }
   };
+
+
 }
+
+process_it_geo = function (doc) {
+  // === split the document into lines ===
+
+
+  lines = doc.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].length > 1) {
+      // === split each line into parts separated by "|" and use the contents ===
+      parts = lines[i].split("|");
+      var lat = parseFloat(parts[0]);
+      var lng = parseFloat(parts[1]);
+      var html = parts[2];
+      var label = parts[3];
+      var point = {
+        lat: lat,
+        lng: lng
+      };
+      // create the marker
+      var marker = createMarker(point, label, html);
+    }
+  }
+  // put the assembled side_bar_html contents into the side_bar div
+  document.getElementById("side_bar").innerHTML = side_bar_html;
+}
+
+
+function currentIndex() {
+  var page = window.location.pathname.split("/").pop();
+  return page.split(".")[0] + ".txt";
+}
+
+//Old processing of text file
   // google.maps.event.addListener(map, 'click', function () {
   //   infowindow.close();
   // });
 
   // === Define the function thats going to process the text file ===
-  process_it = function (doc) {
-    // === split the document into lines ===
-    lines = doc.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      if (lines[i].length > 1) {
-        // === split each line into parts separated by "|" and use the contents ===
-        parts = lines[i].split("|");
-        var lat = parseFloat(parts[0]);
-        var lng = parseFloat(parts[1]);
-        var html = parts[2];
-        var label = parts[3];
-        var point = {
-          lat: lat,
-          lng: lng
-        };
-        // create the marker
-        var marker = createMarker(point, label, html);
-      }
-    }
-    // put the assembled side_bar_html contents into the side_bar div
-    document.getElementById("side_bar").innerHTML = side_bar_html;
-  }
+  // process_it_geo = function (doc) {
+  //   // === split the document into lines ===
+  //   lines = doc.split("\n");
+  //   for (var i = 0; i < lines.length; i++) {
+  //     if (lines[i].length > 1) {
+  //       // === split each line into parts separated by "|" and use the contents ===
+  //       parts = lines[i].split("|");
+  //       var lat = parseFloat(parts[0]);
+  //       var lng = parseFloat(parts[1]);
+  //       var html = parts[2];
+  //       var label = parts[3];
+  //       var point = {
+  //         lat: lat,
+  //         lng: lng
+  //       };
+  //       // create the marker
+  //       var marker = createMarker(point, label, html);
+  //     }
+  //   }
+  //   // put the assembled side_bar_html contents into the side_bar div
+  //   document.getElementById("side_bar").innerHTML = side_bar_html;
+  // }
 
 
-  function currentIndex() {
-    var page = window.location.pathname.split("/").pop();
-    return page.split(".")[0] + ".txt";
-  }
 
     //]]>
