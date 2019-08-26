@@ -33,14 +33,14 @@ var jsonPull = function(callback) {
 function loadMapsAPI(key,callback) {
   let clusterscript = document.createElement("script");
   clusterscript.type = "text/javascript";
-  clusterscript.src = "/Templates/MarkerCluster/markerclusterer.js";
+  clusterscript.src = "MarkerCluster/markerclusterer.js";
   let keyscript =  document.createElement("script");
   keyscript.type = "text/javascript";
   keyscript.src = `//maps.googleapis.com/maps/api/js?key=${key}`;
   keyscript.onload = callback;
   let spiderscript =  document.createElement("script");
   spiderscript.type = "text/javascript";
-  spiderscript.src = "/Templates/MarkerCluster/oms.min.js";
+  spiderscript.src = "MarkerCluster/oms.min.js";
   spiderscript.onload = callback;
   document.head.appendChild(keyscript);
   document.head.appendChild(clusterscript);
@@ -103,7 +103,7 @@ process_it_geo = function(json, createMarker) {
   var markerCluster = new MarkerClusterer(map, gmarkers,
     {
       maxZoom: 10,
-      imagePath: '/Templates/MarkerCluster/images/m'});
+      imagePath: 'MarkerCluster/images/m'});
   // put the assembled side_bar_html contents into the side_bar div
   document.getElementById("side_bar").innerHTML = side_bar_html; 
 }
