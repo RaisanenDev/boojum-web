@@ -1,0 +1,35 @@
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {box-sizing: border-box;margin: 0;width: 100%;height: 100%;}
+
+.mainBox {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border: grey solid 10px;
+}
+
+.button {
+    background: grey;
+    width: 10px;
+    height: 100%;
+}
+
+.map {
+    width: 70%;
+    background: lightgray;
+}
+
+.sidebar {
+    width: 30%;
+    background: lightblue;
+    word-wrap: normal;
+    overflow:scroll;
+    overflow-x:hidden;
+}
