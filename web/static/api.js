@@ -97,7 +97,7 @@ process_it_geo = function(json, createMarker) {
       reportHTML += `<li><a href=${json[i][index]["identifier"][0]}>${json[i][index]["title"][0]}</a></li><br>`     
     }
     //Add site + reports to sidebar 
-    side_bar_html += `<a href='javascript:map.setCenter({lat:${json[i][0]["coverage"][0]}, lat:${json[i][0]["coverage"][1]})'><h4>${sitename}</h4></a><ul>${reportHTML}</ul>`
+    side_bar_html += `<a href='javascript:map.setCenter({lat:${json[i][0]["coverage"][0]}, lng:${json[i][0]["coverage"][1]}})'><h4>${sitename}</h4></a><ul>${reportHTML}</ul>`
     
   }
   var markerCluster = new MarkerClusterer(map, gmarkers,
